@@ -313,7 +313,8 @@ def main(unused_argv):
     run_eval(model, batcher, vocab)
   elif hps.mode.value == 'decode':
     decode_model_hps = hps  # This will be the hyperparameters for the decoder model
-    decode_model_hps = hps._replace.value(max_dec_steps=1) # The model is configured with max_dec_steps=1 because we only ever run one step of the decoder at a time (to do beam search). Note that the batcher is initialized with max_dec_steps equal to e.g. 100 because the batches need to contain the full summaries
+    # decode_model_hps = hps._replace.value(max_dec_steps=1) # The model is configured with max_dec_steps=1 because we only ever run one step of the decoder at a time (to do beam search). Note that the batcher is initialized with max_dec_steps equal to e.g. 100 because the batches need to contain the full summaries
+    # decode_model_hps.max_dec_steps.value = 1
     model = SummarizationModel(decode_model_hps, vocab)
     decoder = BeamSearchDecoder(model, batcher, vocab)
     decoder.decode() # decode indefinitely (unless single_pass=True, in which case deocde the dataset exactly once)
